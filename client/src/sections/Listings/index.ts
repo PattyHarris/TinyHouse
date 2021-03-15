@@ -1,3 +1,1 @@
-import { Listings } from "./Listings";
-
-export { Listings as default };
+export * from "./Listings";
