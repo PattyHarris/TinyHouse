@@ -1,4 +1,5 @@
 import React from "react";
+import { resolveProjectReferencePath } from "typescript";
 import { server, useQuery } from "../../lib/api";
 import { DeleteListingData, 
          DeleteListingVariables, 
@@ -35,7 +36,7 @@ interface Props {
 
 export const Listings = ( { title }: Props ) => {
 
-    const { data } = useQuery<ListingsData>(LISTINGS);
+    const { data, refetch } = useQuery<ListingsData>(LISTINGS);
 
     const deleteListing = async ( id: string ) => {
         await server.fetch<DeleteListingData, DeleteListingVariables>({
@@ -45,6 +46,7 @@ export const Listings = ( { title }: Props ) => {
             }
         });
 
+        refetch();
     };
 
     const listings = data ? data.listings : null;

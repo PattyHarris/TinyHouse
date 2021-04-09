@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { server } from "./server";
 
 // Contains the data object from the API call.
@@ -12,14 +12,20 @@ export const useQuery = <TData = any>(query: string) => {
         data: null
     });
 
-    useEffect(() => {
+    const fetch = useCallback(() => {
         const fetchAPI = async () => {
             const { data } = await server.fetch<TData>({ query });
             setState( { data} );
         };
-
+    
         fetchAPI();
+
     }, [query]);
 
-    return state;
+ 
+    useEffect(() => {
+        fetch();
+    }, [fetch]);
+
+    return {...state, refetch: fetch};
 };
